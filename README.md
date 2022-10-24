@@ -4,7 +4,7 @@
 # 使用
 ```js
 // 导入
-import selectAvatars from '../vue-select-avatars'
+import selectAvatars from 'vue-select-avatars'
 export default {
   name: 'App',
   methods:{
