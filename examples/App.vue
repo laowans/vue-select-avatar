@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <button @click="m1">123</button><br>
+    <button @click="m1">选择头像</button><br>
     <div id="imgBox">
       <img ref="img" alt="">
     </div>

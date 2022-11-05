@@ -14,6 +14,8 @@ const selectAvatars = ({
     zoomRatio = 6, // 最大放大倍数
     accept = ['jpg', 'jpeg', 'png'], // 文件格式
     maxKB = 2048, // 文件最大KB值
+    edgeLine = false, // 是否展示边缘线
+    themeColor = '#40a1ff', // 主题色
 } = {}) =>{
     // 验证参数
     if(returnType !== 'base64' && returnType !== 'file') throw new Error('Parameter error: "returnType" should be a string and the value should be "base64" or "file"')
@@ -27,6 +29,8 @@ const selectAvatars = ({
     if(!(accept instanceof Array)) throw new Error('Parameter error: "accept" should be Array')
     if(!accept.every(a=>typeof a === 'string')) throw new Error('Parameter error: each item of "accept" should be a string')
     if(typeof maxKB !== 'number') throw new Error('Parameter error: "maxKB" should be number')
+    if(typeof edgeLine !== 'boolean') throw new Error('Parameter error: "edgeLine" should be boolean')
+    if(typeof themeColor !== 'string' || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(themeColor)) throw new Error('Parameter error: "themeColor" should be a hexadecimal color code')
 
     return new Promise((resolve, reject)=>{
         const fileInput = document.createElement('input') // 创建input元素
@@ -68,6 +72,7 @@ const selectAvatars = ({
                                 confirmButtonText,
                                 zoomRatio,
                                 isPhone,
+                                edgeLine,
                                 resolve,
                                 reject,
                             },
