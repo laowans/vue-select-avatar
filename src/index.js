@@ -14,6 +14,8 @@ const selectAvatars = ({
     zoomRatio = 6, // 最大放大倍数
     accept = ['jpg', 'jpeg', 'png'], // 文件格式
     maxKB = 2048, // 文件最大KB值
+    edgeLine = false, // 是否展示边缘线
+    themeColor = '#40a1ff', // 主题色
 } = {}) =>{
     // 验证参数
     if(returnType !== 'base64' && returnType !== 'file') throw new Error('Parameter error: "returnType" should be a string and the value should be "base64" or "file"')

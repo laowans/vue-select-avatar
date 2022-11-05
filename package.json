@@ -2,17 +2,18 @@
   "name": "vue-select-avatar",
   "version": "1.0.0",
   "private": false,
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "description": "基于vue选择头像的包",
   "keywords":[
     "选择头像"
   ],
   "license": "ISC",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib ./src/index.js --name avatar --dest dist",
-    "lint": "vue-cli-service lint"
+    "lib": "vue-cli-service build --target lib ./src/index.js --name avatar --dest lib/dist",
+    "lint": "vue-cli-service lint",
+    "pub": "npm publish --access"
   },
   "dependencies": {
     "core-js": "^3.8.3",
