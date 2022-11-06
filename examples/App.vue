@@ -18,14 +18,20 @@ export default {
   },
   methods:{
     m1(){
-      selectAvatars({
-        nightMode:false,
-        maskLayer:true,
-        themeColor:'#E6A23C'
-      }).then(s=>{
-        this.$refs.img.src = s
-      }).catch(err=>{
-        console.log(err);
+      selectAvatars({ // 配置项
+        nightMode: true, // 是否为夜间模式
+      }).then(data=>{
+        console.log('数据：', data)
+
+      }).catch(err=>{ // 错误处理
+        switch(err.code){
+          case 0 :
+            console.log('图片格式错误')
+            break;
+          case 1 :
+            console.log('图片过大')
+            break;
+        }
       })
     }
   },
