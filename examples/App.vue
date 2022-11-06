@@ -21,7 +21,7 @@ export default {
       selectAvatars({
         nightMode:false,
         maskLayer:true,
-        themeColor:'#E6A23C'
+        // themeColor:'#E6A23C'
       }).then(s=>{
         this.$refs.img.src = s
       }).catch(err=>{
