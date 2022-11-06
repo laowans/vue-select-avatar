@@ -1,13 +1,19 @@
 <template>
     <div id="selectAvatarBox">
         <div class="maskLayer" ref="maskLayer" @click="Bclose"></div>
-        <div id="selectAvatar" ref="selectAvatar">
+        <div id="selectAvatar" ref="selectAvatar" :class="{ ye:nightMode, phone:isPhone }" :style="colorStr">
             <svg t="1666582617718"  @click="Bclose" title="点击关闭" class="icon selectAvatar-box__close" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3359" width="200" height="200"><path d="M1007.603202 929.818395L592.684241 514.699473 1007.603202 99.780512c10.797891-10.797891 16.196837-24.795157 16.196837-38.992385 0-13.997266-5.398946-28.194493-16.196837-38.992384-21.595782-21.595782-56.388987-21.595782-77.984768 0L514.699473 436.914665 99.780512 21.795743C78.18473 0.199961 43.391525 0.199961 21.795743 21.795743s-21.595782 56.388987 0 77.984769l415.118922 414.918961L21.795743 929.818395c-21.595782 21.595782-21.595782 56.388987 0 77.984768s56.388987 21.595782 77.984769 0l414.918961-415.118922L929.818395 1007.603202c10.797891 10.797891 24.795157 16.196837 38.992384 16.196837 13.997266 0 28.194493-5.398946 38.992384-16.196837 21.395821-21.395821 21.395821-56.388987-0.199961-77.784807z" p-id="3360"></path></svg>
             <div id="AvatarTitle">{{title}}</div>
             <div id="AvatarBox">
                 <div id="left"></div>
                 <div id="right"></div>
                 <img :src="base64" id="img" ref="img" :style="`width: ${width}px; height: ${height}px; top: ${img_y}px; left: ${img_x}px;`">
+                <template v-if="edgeLine">
+                    <div id="edgeLine" :style="edgeLineOpacityStr" class="_top"></div>
+                    <div id="edgeLine" :style="edgeLineOpacityStr" class="_right"></div>
+                    <div id="edgeLine" :style="edgeLineOpacityStr" class="_bottom"></div>
+                    <div id="edgeLine" :style="edgeLineOpacityStr" class="_left"></div>
+                </template>
             </div>
             <div id="buttonBox">
                 <div onselectstart="return false">
@@ -36,11 +42,21 @@ export default {
             img_x: 0, // 图片 x 轴坐标
             img_y: 0, // 图片 Y 轴坐标
             drag: false, // 图片是否处于移动中
+            colorStr: '', // 颜色变量
+            edgeLineOpacityStr: '',
         }
     },
     mounted(){
-        if(this.isPhone) this.$refs.selectAvatar.classList.add('phone') // 添加移动端专属类名
-        if(this.nightMode) this.$refs.selectAvatar.classList.add('ye') // 添加夜间模式专属类名
+        // 根据主题色计算不同深浅的颜色
+        let colorStr = `--theme-color: rgb(${this.RGB[0]}, ${this.RGB[1]}, ${this.RGB[2]});`
+        colorStr += `--theme-color-90: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 90% );`
+        colorStr += `--theme-color-75: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 75% );`
+        colorStr += `--theme-color-50: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 50% );`
+        colorStr += `--theme-color-20: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 20% );`
+        colorStr += `--theme-color-10: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 10% );`
+        this.colorStr = colorStr
+
+        this.edgeLineOpacityStr = `opacity: ${this.edgeLineOpacity};`
 
         setTimeout(() => {
             if(this.maskLayer){
@@ -206,6 +222,8 @@ export default {
         },
         wheelCallback(event){ // 鼠标滚动事件回调
             event = event || window.event; // 兼容处理
+
+            event.preventDefault()
 
             // 存储原始宽高
             const width = this.width
@@ -408,6 +426,22 @@ export default {
 }
 </script>
 
+<!-- color -->
+<style scoped>
+#selectAvatar{
+    --solid-color: #ffffff; /* 纯色 */
+    --text-color: #313234; /* 文字颜色 */
+    --bag-color: #f5f7fa; /* 背景颜色 */
+    --close-but-color: #909399; /* 关闭按钮颜色 */
+    --but-border-color: #828282; /* 按钮边框颜色 */
+}
+#selectAvatar.ye{
+    --text-color: #eeeeee; /* 文字颜色 */
+    --bag-color: #262727; /* 背景颜色 */
+    --close-but-color: #a3a6ad; /* 关闭按钮颜色 */
+}
+</style>
+
 <style scoped>
 #selectAvatarBox{
     position: fixed;
@@ -424,7 +458,7 @@ export default {
     left: 50%;
     width: 420px;
     min-height: 520px;
-    background-color: #f5f7fa;
+    background-color: var(--bag-color);
     transform: translate(-50%,-60%);
     opacity: 0;
     border-radius: 4px;
@@ -441,12 +475,12 @@ export default {
     position: absolute;
     top: 20px;
     right: 20px;
-    fill: #909399;
+    fill: var(--close-but-color);
     width: 14px;
     height: 14px;
 }
 .selectAvatar-box__close:hover{
-    fill: #40a1ff !important;
+    fill: var(--theme-color) !important;
 }
 #AvatarBox{
     width: 100%;
@@ -499,7 +533,7 @@ export default {
 }
 #AvatarTitle{
     font-size: 16px;
-    color: #313234;
+    color: var(--text-color);
 }
 .maskLayer{
     position: absolute;
@@ -512,7 +546,7 @@ export default {
     transition: all 0.5s;
 }
 .maskLayer.active{
-    opacity: 0.3;
+    opacity: 0.35;
 }
 #buttonBox{
     height: 30;
@@ -529,44 +563,60 @@ export default {
     height: 32px;
     font-size: 12px;
     background-color: transparent;
-    border: 1px solid #cdd0d6;
-    color: #313234;
+    border: 1px solid var(--but-border-color);
+    color: var(--text-color);
     -webkit-tap-highlight-color: transparent;
 }
 .AvatarBut:hover{
-    background-color: rgba(30, 144, 255, 0.2) !important;
-    border: 1px solid rgba(30, 144, 255, 0.5) !important;
-    color: #40a1ff !important;
+    background-color: var(--theme-color-20);
+    border: 1px solid var(--theme-color-50);
+    color: var(--theme-color);
 }
 .AvatarBut:active{
-    background-color: rgba(30, 144, 255, 0.1) !important;
-    border: 1px solid rgba(30, 144, 255, 1) !important;
+    background-color: var(--theme-color-10);
+    border: 1px solid var(--theme-color);
 }
 .AvatarBut.primary{
-    background-color: #1e90ff;
-    border: 1px solid #1e90ff;
-    color: #fff;
+    background-color: var(--theme-color);
+    border: 1px solid var(--theme-color);
+    color: var(--solid-color) !important;
 }
-.AvatarBut:hover.primary{
-    background-color: #40a1ff;
-    border: 1px solid rgba(25, 120, 212, 1);
+.AvatarBut.primary:hover{
+    background-color: var(--theme-color-90);
+    border: 1px solid var(--theme-color-10);
 }
-.AvatarBut:active.primary{
-    background-color: rgba(30, 144, 255, 0.7);
+.AvatarBut.primary:active{
+    background-color: var(--theme-color-75);
 }
-</style>
-
-<!-- ye -->
-<style scoped>
-#selectAvatar.ye{
-    background-color: #262727;
+/* 边缘线样式 */
+#edgeLine{
+    position: absolute;
+    border: none;
+    z-index: 9999;
 }
-.ye .selectAvatar-box__close{
-    fill: #a3a6ad;
+#edgeLine._top{
+    border-bottom: 1px solid var(--theme-color);
+    width: 301px;
+    top: 79px;
+    left: 60px;
 }
-.ye .AvatarBut{
-    color: #cfd3dc;
-    border: 1px solid #636466;
+#edgeLine._right{
+    border-left: 1px solid var(--theme-color);
+    height: 301px;
+    top: 80px;
+    right: 59px;
+}
+#edgeLine._bottom{
+    border-top: 1px solid var(--theme-color);
+    width: 301px;
+    bottom: 79px;
+    left: 59px;
+}
+#edgeLine._left{
+    border-right: 1px solid var(--theme-color);
+    height: 301px;
+    top: 79px;
+    left: 59px;
 }
 </style>
 
@@ -620,7 +670,24 @@ export default {
     -webkit-user-modify: read-write-plaintext-only;
 }
 .phoneBut.AvatarBut.active{
-    background-color: rgba(30, 144, 255, 0.1) !important;
-    border: 1px solid rgba(30, 144, 255, 1) !important;
+    background-color: var(--theme-color-10) !important;
+    border: 1px solid var(--theme-color) !important;
+    color: var(--theme-color) !important;
+}
+.phone #edgeLine._top{
+    top: 39px;
+    left: 20px;
+}
+.phone #edgeLine._right{
+    top: 40px;
+    right: 19px;
+}
+.phone #edgeLine._bottom{
+    bottom: 39px;
+    left: 19px;
+}
+.phone #edgeLine._left{
+    top: 39px;
+    left: 19px;
 }
 </style>

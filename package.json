@@ -2,7 +2,7 @@
   "name": "vue-select-avatar",
   "version": "1.0.0",
   "private": false,
-  "main": "./lib/index.js",
+  "main": "./src/index.js",
   "description": "基于vue选择头像的包",
   "keywords":[
     "选择头像"

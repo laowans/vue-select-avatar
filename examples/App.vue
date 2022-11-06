@@ -19,8 +19,9 @@ export default {
   methods:{
     m1(){
       selectAvatars({
-        nghtMode:true,
+        nightMode:false,
         maskLayer:true,
+        themeColor:'#E6A23C'
       }).then(s=>{
         this.$refs.img.src = s
       }).catch(err=>{

@@ -14,8 +14,9 @@ const selectAvatars = ({
     zoomRatio = 6, // 最大放大倍数
     accept = ['jpg', 'jpeg', 'png'], // 文件格式
     maxKB = 2048, // 文件最大KB值
-    edgeLine = false, // 是否展示边缘线
-    themeColor = '#40a1ff', // 主题色
+    edgeLine = true, // 是否展示边缘线
+    edgeLineOpacity = 0.8, // 边缘线透明度
+    themeColor = '#409EFF', // 主题色(16进制颜色代码)
 } = {}) =>{
     // 验证参数
     if(returnType !== 'base64' && returnType !== 'file') throw new Error('Parameter error: "returnType" should be a string and the value should be "base64" or "file"')
@@ -30,6 +31,7 @@ const selectAvatars = ({
     if(!accept.every(a=>typeof a === 'string')) throw new Error('Parameter error: each item of "accept" should be a string')
     if(typeof maxKB !== 'number') throw new Error('Parameter error: "maxKB" should be number')
     if(typeof edgeLine !== 'boolean') throw new Error('Parameter error: "edgeLine" should be boolean')
+    if(typeof edgeLineOpacity !== 'number' || !(edgeLineOpacity >= 0 && edgeLineOpacity <= 1)) throw new Error('Parameter error: "edgeLineOpacity" should be digital, and the value is set between 0 and 1')
     if(typeof themeColor !== 'string' || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(themeColor)) throw new Error('Parameter error: "themeColor" should be a hexadecimal color code')
 
     return new Promise((resolve, reject)=>{
@@ -48,13 +50,23 @@ const selectAvatars = ({
                         // 验证图片的格式
                         let fileName =  base64.replace(/data:image\/([^;]+).*/i,'$1') // 匹配文件格式
                         if(fileName === 'svg+xml') fileName = 'svg'
-                        if(accept.indexOf(fileName) === -1) throw new Error('Picture format error') // 图片格式错误
+                        const err1 = new Error('Picture format error')
+                        err1.code = 0
+                        if(accept.indexOf(fileName) === -1) throw err1 // 图片格式错误
 
                         // 验证图片大小
                         const base64n = base64.replace(/^data:image\/\w+;base64,/, "") //去掉图片base64码前面部分data:image/png;base64
                         let fileSize = base64n.length - (base64n.length / 8) * 2 // 获取字节数byte
                         fileSize = fileSize / 1024 // 获取KB数
-                        if(Math.floor(fileSize) > maxKB) throw new Error('Picture is too large') // 图片过大
+                        const err2= new Error('Picture is too large')
+                        err2.code = 1
+                        if(Math.floor(fileSize) > maxKB) throw err2 // 图片过大
+
+                        // 16进制颜色代码转RGB值
+                        const R = ('0x' + themeColor.substr(1, 2)) * 1
+                        const G = ('0x' + themeColor.substr(3, 2)) * 1
+                        const B = ('0x' + themeColor.substr(5, 2)) * 1
+                        const RGB = [R, G, B]
 
                         // 是否为移动端
                         const isPhone = /mobile/i.test(navigator.userAgent)
@@ -73,6 +85,8 @@ const selectAvatars = ({
                                 zoomRatio,
                                 isPhone,
                                 edgeLine,
+                                edgeLineOpacity,
+                                RGB,
                                 resolve,
                                 reject,
                             },
