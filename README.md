@@ -7,16 +7,15 @@ PC端：![pc](https://gitee.com/laowans/vue-select-avatar/blob/1edbdeceebe2a7c65
 移动端：![app](https://gitee.com/laowans/vue-select-avatar/raw/1edbdeceebe2a7c6503f7edfa26f1f2441fcdb71/static/2.gif)
 
 # 使用
-
 ```js
 // 导入
-import selectAvatars from 'vue-select-avatars'
+import selectAvatars from 'vue-select-avatars' 
 export default {
   name: 'App',
   methods:{
     click(){
       selectAvatars({ // 配置项
-        returnType = 'base64', // 返回的数据格式(base64 | file)
+        returnType = 'base64', // 返回的数据格式(base64 or file)
         nightMode = false, // 是否为夜间模式
         title = '选择头像', // 标题
         maskLayer = true, // 是否出现遮罩层
@@ -26,9 +25,6 @@ export default {
         zoomRatio = 6, // 最大放大倍数
         accept = ['jpg', 'jpeg', 'png'], // 文件格式
         maxKB = 2048, // 文件最大KB值
-        edgeLine = true, // 是否展示边缘线
-        edgeLineOpacity = 0.8, // 边缘线透明度
-        themeColor = '#409EFF', // 主题色(16进制颜色代码)
       }).then(data=>{
         console.log('数据：', data)
       }).catch(err=>{ // 错误处理
