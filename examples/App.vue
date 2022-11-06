@@ -19,7 +19,7 @@ export default {
   methods:{
     m1(){
       selectAvatars({
-        nightMode:false,
+        nightMode:false, 
         maskLayer:true,
         // themeColor:'#E6A23C'
       }).then(s=>{
