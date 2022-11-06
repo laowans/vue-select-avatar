@@ -12,7 +12,7 @@ const selectAvatars = ({
     cancelButtonText = '取消', // 确定按钮文本
     confirmButtonText = '确定', // 取消按钮文本
     zoomRatio = 6, // 最大放大倍数
-    accept = ['jpg', 'jpeg', 'png'], // 文件格式
+    accept = '*', // 文件格式
     maxKB = 2048, // 文件最大KB值
     edgeLine = true, // 是否展示边缘线
     edgeLineOpacity = 0.8, // 边缘线透明度
@@ -27,8 +27,8 @@ const selectAvatars = ({
     if(typeof cancelButtonText !== 'string') throw new Error('Parameter error: "cancelButtonText" should be string')
     if(typeof confirmButtonText !== 'string') throw new Error('Parameter error: "confirmButtonText" should be string')
     if(typeof zoomRatio !== 'number') throw new Error('Parameter error: "zoomRatio" should be number')
-    if(!(accept instanceof Array)) throw new Error('Parameter error: "accept" should be Array')
-    if(!accept.every(a=>typeof a === 'string')) throw new Error('Parameter error: each item of "accept" should be a string')
+    if(!((accept instanceof Array) || accept === '*')) throw new Error('Parameter error: "accept" should be Array or "*"')
+    if((accept instanceof Array) && !accept.every(a=>typeof a === 'string')) throw new Error('Parameter error: each item of "accept" should be a string')
     if(typeof maxKB !== 'number') throw new Error('Parameter error: "maxKB" should be number')
     if(typeof edgeLine !== 'boolean') throw new Error('Parameter error: "edgeLine" should be boolean')
     if(typeof edgeLineOpacity !== 'number' || !(edgeLineOpacity >= 0 && edgeLineOpacity <= 1)) throw new Error('Parameter error: "edgeLineOpacity" should be digital, and the value is set between 0 and 1')
@@ -37,7 +37,11 @@ const selectAvatars = ({
     return new Promise((resolve, reject)=>{
         const fileInput = document.createElement('input') // 创建input元素
         fileInput.type = 'file' // 设置元素的类型
-        fileInput.accept = accept.map(a=>'.'+a).join(', ')
+        if(accept instanceof Array){
+            fileInput.accept = accept.map(a=>'.'+a).join(', ')
+        }else if(accept === '*'){
+            fileInput.accept = 'image/*'
+        }
         fileInput.click() // 执行元素的点击事件
         fileInput.oninput = (event)=>{
             const FileList = event.target.files
@@ -48,11 +52,16 @@ const selectAvatars = ({
                     const base64 = reader.result
                     try{
                         // 验证图片的格式
-                        let fileName =  base64.replace(/data:image\/([^;]+).*/i,'$1') // 匹配文件格式
-                        if(fileName === 'svg+xml') fileName = 'svg'
                         const err1 = new Error('Picture format error')
                         err1.code = 0
-                        if(accept.indexOf(fileName) === -1) throw err1 // 图片格式错误
+                        if(accept instanceof Array){
+                            let fileName =  base64.replace(/data:image\/([^;]+).*/i,'$1') // 匹配文件格式
+                            if(fileName === 'svg+xml') fileName = 'svg'
+                            
+                            if(accept.indexOf(fileName) === -1) throw err1 // 图片格式错误
+                        }else if(accept === '*'){
+                            if(!(/^data:image\/([^;]+).*/.test(base64))) throw err1 // 图片格式错误
+                        }
 
                         // 验证图片大小
                         const base64n = base64.replace(/^data:image\/\w+;base64,/, "") //去掉图片base64码前面部分data:image/png;base64
