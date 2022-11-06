@@ -2,9 +2,9 @@
 这是一个基于 vue 选择头像的包，可自定义主题色、图片格式、图片文件大小等，支持返回 base64 和 file 格式的“PNG”图片，同时还适配了移动端。
 
 # 效果展示
-PC端：![pc](../../1.gif)
+PC端：![pc](https://gitee.com/laowans/vue-select-avatar/blob/1edbdeceebe2a7c6503f7edfa26f1f2441fcdb71/static/1.gif)
 
-移动端：![app](../../2.gif)
+移动端：![app](https://gitee.com/laowans/vue-select-avatar/raw/1edbdeceebe2a7c6503f7edfa26f1f2441fcdb71/static/2.gif)
 
 # 使用
 
