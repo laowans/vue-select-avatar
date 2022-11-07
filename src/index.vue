@@ -314,11 +314,11 @@ export default {
 
             const thid = this // 存储this
             const newImage = new Image();
-            newImage.src = this.base64
             newImage.onload = function () {
                 const canvas = document.createElement("canvas");// 创建canvas对象
                 const ctx = canvas.getContext("2d");
-                // 设置宽高
+
+                // 设置画板大小
                 canvas.width = thid.y_img_width;
                 canvas.height = thid.y_img_height;
 
@@ -342,26 +342,54 @@ export default {
                 // 获取 base64 数据
                 const base64Data = nCanvas.toDataURL('image/png')
 
-                if(thid.returnType === 'base64'){ // 返回 base64 格式数据
-                    thid.resolve(base64Data)
-                }else if(thid.returnType === 'file'){ // 返回 file 格式数据
-                    const arr = base64Data.split(','),
-                    mime = arr[0].match(/:(.*?);/)[1], // 获取 base64 的文件类型
-                    bstr = atob(arr[1]); // 解码 base64
-                        
-                    let n = bstr.length,
-                    u8arr = new Uint8Array(n);
+                // 结束函数
+                function end(base64){
+                    if(thid.returnType === 'base64'){ // 返回 base64 格式数据
+                        thid.resolve(base64)
+                    }else if(thid.returnType === 'file'){ // 返回 file 格式数据
+                        const arr = base64.split(','),
+                        mime = arr[0].match(/:(.*?);/)[1], // 获取 base64 的文件类型
+                        bstr = atob(arr[1]); // 解码 base64
+                            
+                        let n = bstr.length,
+                        u8arr = new Uint8Array(n);
 
-                    while (n--) {
-                        u8arr[n] = bstr.charCodeAt(n);
+                        while (n--) {
+                            u8arr[n] = bstr.charCodeAt(n);
+                        }
+                        
+                        thid.resolve(new File([u8arr], 'images', {type: mime}))
                     }
-                    
-                    thid.resolve(new File([u8arr], 'images', {type: mime}))
+
+                    // 关闭选择窗口
+                    thid.close()
                 }
 
-                // 关闭选择窗口
-                thid.close()
+                // 开启了开启返回头像最大尺寸且计算的尺寸大于设置的的尺寸
+                if(thid.avatarMaxSize && thid.returnAvatarMaxSize < l){
+                    const newImage2 = new Image()
+                    newImage2.onload = function () {
+                        const canvas2 = document.createElement("canvas");// 创建canvas对象
+                        const ctx2 = canvas2.getContext("2d");
+
+                        // 设置画板大小
+                        canvas2.width = thid.returnAvatarMaxSize
+                        canvas2.height = thid.returnAvatarMaxSize
+
+                        // 在canvas绘制图片
+                        ctx2.drawImage(this, 0, 0, canvas2.width, canvas2.height)
+
+                        // 获取 base64 数据
+                        const base642 = canvas2.toDataURL('image/png')
+
+                        end(base642)
+                    }
+                    newImage2.src = base64Data
+                }else{
+                    end(base64Data)
+                }
             }
+            newImage.src = this.base64
         },
         zoom(s){ // 移动端缩放函数
             // 存储原始宽高
