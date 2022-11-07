@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import selectAvatars from '../src'
+import selectAvatars from '../lib'
 export default {
   name: 'App',
   data() {
@@ -21,11 +21,12 @@ export default {
       selectAvatars({
         nightMode:false, 
         maskLayer:true,
-        // themeColor:'#E6A23C'
+        // themeColor:'#E6A23C',
+        avatarMaxSize:true
       }).then(s=>{
         this.$refs.img.src = s
       }).catch(err=>{
-        console.log(err);
+        console.log(err.code);
       })
     }
   },
