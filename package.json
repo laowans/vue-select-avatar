@@ -1,13 +1,13 @@
 {
   "name": "vue-select-avatar",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": false,
   "main": "./src/index.js",
   "description": "基于vue选择头像的包",
   "keywords":[
     "选择头像"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
