@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import selectAvatars from '../lib'
+import selectAvatars from '../src'
 export default {
   name: 'App',
   data() {
@@ -21,10 +21,18 @@ export default {
       selectAvatars({
         nightMode:false, 
         maskLayer:true,
-        // themeColor:'#E6A23C',
-        avatarMaxSize:true
+        themeColor:'#E6A23C',
+        avatarMaxSize:true,
+        // returnType:'file'
       }).then(s=>{
+
         this.$refs.img.src = s
+        
+        // const reader = new FileReader();
+        // reader.readAsDataURL(s); // 转base64
+        // reader.onload = ()=>{
+        //   this.$refs.img.src = reader.result
+        // }
       }).catch(err=>{
         console.log(err.code);
       })
