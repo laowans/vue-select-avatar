@@ -34,26 +34,25 @@ export default {
     name:'selectAvatar',
     data(){
         return {
-            y_img_width: 0, // 图片原始宽度
-            y_img_height: 0, // 图片原始高度
             img_width: 0, // 图片处理后的宽度
             img_height: 0, // 图片处理后的高度
-            img_ZoomRatio: 0, // 图片缩放比例（基于300）
+            img_ZoomRatio: 0, // 图片缩放比例（基于300x300）
             img_x: 0, // 图片 x 轴坐标
             img_y: 0, // 图片 Y 轴坐标
             drag: false, // 图片是否处于移动中
             colorStr: '', // 颜色变量
-            edgeLineOpacityStr: '',
+            edgeLineOpacityStr: '', // 边缘线透明度
         }
     },
     mounted(){
         // 根据主题色计算不同深浅的颜色
-        let colorStr = `--theme-color: rgb(${this.RGB[0]}, ${this.RGB[1]}, ${this.RGB[2]});`
-        colorStr += `--theme-color-90: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 90% );`
-        colorStr += `--theme-color-75: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 75% );`
-        colorStr += `--theme-color-50: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 50% );`
-        colorStr += `--theme-color-20: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 20% );`
-        colorStr += `--theme-color-10: rgba(${this.RGB[0]} ${this.RGB[1]} ${this.RGB[2]} / 10% );`
+        const rgbStr = `${this.RGB[0]}, ${this.RGB[1]}, ${this.RGB[2]}`
+        let colorStr = `--theme-color: rgb(${rgbStr});`
+        + `--theme-color-90: rgba(${rgbStr}, 90% );`
+        + `--theme-color-75: rgba(${rgbStr}, 75% );`
+        + `--theme-color-50: rgba(${rgbStr}, 50% );`
+        + `--theme-color-20: rgba(${rgbStr}, 20% );`
+        + `--theme-color-10: rgba(${rgbStr}, 10% );`
         this.colorStr = colorStr
 
         this.edgeLineOpacityStr = `opacity: ${this.edgeLineOpacity};`
@@ -65,67 +64,60 @@ export default {
             this.$refs.selectAvatar.classList.add('active')
         }, 10);
 
-        const img = new Image();
-        img.src = this.base64;
-        img.onload = ()=>{
-            this.y_img_width = img.width
-            this.y_img_height = img.height
+        let minObj = { // 小的值对象
+            value:null,
+            name:null,
+        }
+        let maxObj = { // 大的值对象
+            value:null,
+            name:null,
+        }
 
-            let minObj = { // 小的值对象
-                value:null,
-                name:null,
-            }
-            let maxObj = { // 大的值对象
-                value:null,
-                name:null,
-            }
+        // 找出宽高的大值和小值
+        if(this.y_img_width > this.y_img_height){
+            minObj.value = this.y_img_height
+            minObj.name = 'height'
 
-            // 找出宽高的大值和小值
-            if(this.y_img_width > this.y_img_height){
-                minObj.value = this.y_img_height
-                minObj.name = 'height'
-
-                maxObj.value = this.y_img_width
-                maxObj.name = 'width'
-            }else{
-                minObj.value = this.y_img_width
-                minObj.name = 'width'
-                
-                maxObj.value = this.y_img_height
-                maxObj.name = 'height'
-            }
-
-            // 计算缩放比
-            let proportion = 300 / minObj.value
+            maxObj.value = this.y_img_width
+            maxObj.name = 'width'
+        }else{
+            minObj.value = this.y_img_width
+            minObj.name = 'width'
             
-            // 初始宽高赋值
-            this[`img_${minObj.name}`] = 300
-            this[`img_${maxObj.name}`] = Math.floor(maxObj.value * proportion) // 根据缩放比计算宽高之间大的值的长度
-            
-            this.$refs.img.width = this.img_width
-            this.$refs.img.height = this.img_height
+            maxObj.value = this.y_img_height
+            maxObj.name = 'height'
+        }
 
-            // 计算图片初始 x，y 轴
-            if(minObj.name === 'height'){
-                if(this.isPhone){
-                    this.img_x = (340 - this.img_width) / 2
-                    this.img_y = 40
-                }else{
-                    this.img_x = (420 - this.img_width) / 2
-                    this.img_y = 80
-                }
+        // 计算缩放比
+        let proportion = 300 / minObj.value
+        
+        // 初始宽高赋值
+        this[`img_${minObj.name}`] = 300
+        this[`img_${maxObj.name}`] = Math.floor(maxObj.value * proportion) // 根据缩放比计算宽高之间大的值的长度
+        
+        this.$refs.img.width = this.img_width
+        this.$refs.img.height = this.img_height
+
+        // 计算图片初始 x，y 轴
+        if(minObj.name === 'height'){
+            if(this.isPhone){
+                this.img_x = (340 - this.img_width) / 2
+                this.img_y = 40
             }else{
-                if(this.isPhone){
-                    this.img_x = 20
-                    this.img_y = (380 - this.img_height) / 2
-                }else{
-                    this.img_x = 60
-                    this.img_y = (460 - this.img_height) / 2
-                }
+                this.img_x = (420 - this.img_width) / 2
+                this.img_y = 80
             }
+        }else{
+            if(this.isPhone){
+                this.img_x = 20
+                this.img_y = (380 - this.img_height) / 2
+            }else{
+                this.img_x = 60
+                this.img_y = (460 - this.img_height) / 2
+            }
+        }
 
-            this.addEvent()
-        };
+        this.addEvent()
     },
     beforeDestroy(){
         document.removeEventListener('touchstart', this.touchstartCallback)
@@ -265,7 +257,7 @@ export default {
             this.correctTimer = setTimeout(() => {
                 this.$refs.img.classList.add('transition01')
 
-                if(this.isPhone){
+                if(this.isPhone){ // 移动端
                     if(this.img_x > 20){ // 上
                         this.img_x = 20
                     }
@@ -278,7 +270,7 @@ export default {
                     if(this.height + this.img_y < 340){ // 下
                         this.img_y = this.img_y + (340 - (this.height + this.img_y))
                     }
-                }else{
+                }else{ // PC端
                     if(this.img_x > 60){ // 上
                         this.img_x = 60
                     }
@@ -348,9 +340,8 @@ export default {
                         thid.resolve(base64)
                     }else if(thid.returnType === 'file'){ // 返回 file 格式数据
                         const arr = base64.split(','),
-                        mime = arr[0].match(/:(.*?);/)[1], // 获取 base64 的文件类型
                         bstr = atob(arr[1]); // 解码 base64
-                            
+
                         let n = bstr.length,
                         u8arr = new Uint8Array(n);
 
@@ -358,7 +349,7 @@ export default {
                             u8arr[n] = bstr.charCodeAt(n);
                         }
                         
-                        thid.resolve(new File([u8arr], 'images', {type: mime}))
+                        thid.resolve(new File([u8arr], 'images', {type: 'image/png'}))
                     }
 
                     // 关闭选择窗口
@@ -447,8 +438,7 @@ export default {
     },
     watch:{
         // 在数据改变时调用矫正函数
-        img_x(){ this.correct() },
-        img_y(){ this.correct() },
+        img_ZoomRatio(){ this.correct() },
         drag(newval){ if(!newval){ this.correct() } },
     },
 }

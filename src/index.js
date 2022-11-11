@@ -17,7 +17,7 @@ const selectAvatars = ({
     edgeLine = true, // 是否展示边缘线
     edgeLineOpacity = 0.8, // 边缘线透明度
     themeColor = '#409EFF', // 主题色(16进制颜色代码)
-    minSize = 0, // 图片宽高的最小值
+    minSize = 0, // 选择图片的宽高的最小值
     avatarMaxSize = false, // 是否开启返回头像最大尺寸
     returnAvatarMaxSize = 512, // 返回头像最大尺寸
 } = {}) =>{
@@ -124,6 +124,8 @@ const selectAvatars = ({
                                 RGB,
                                 avatarMaxSize,
                                 returnAvatarMaxSize,
+                                y_img_width:img.width, // 图片原始宽度
+                                y_img_height:img.height, // 图片原始高度
                                 resolve,
                                 reject,
                             },
