@@ -1,0 +1,27 @@
+{
+  "name": "vue-select-avatar",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "@types/webpack-env": "^1.18.1",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "core-js": "^3.32.1",
+    "typescript": "~4.5.5",
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "dependencies": {
+    "element-ui": "^2.15.14"
+  }
+}
