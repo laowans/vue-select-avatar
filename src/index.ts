@@ -18,6 +18,7 @@ const accept = [
 	'svgz',
 	'webp',
 	'ico',
+	'x-icon',
 	'xbm',
 	'tif',
 	'jfif',
