@@ -135,10 +135,10 @@ export default Vue.extend({
 	},
 	created() {
 		this.generateCSSVar();
+
+		this.computeInitPosition();
 	},
 	mounted() {
-		this.computeInitPosition();
-
 		if (this.options.closeOnPressEscape) {
 			window.addEventListener('keyup', this.onPressEscape);
 		}
@@ -153,21 +153,26 @@ export default Vue.extend({
 	methods: {
 		// 生成css变量
 		generateCSSVar() {
-			this.cssvar = '';
+			this.cssvar = ''; // 置空
 
 			const rgbStr = `${this.RGB[0]}, ${this.RGB[1]}, ${this.RGB[2]}`;
 
+			// 主题色
+			this.cssvar += `--theme-color: rgb(${rgbStr});`;
+			this.cssvar += [90, 75, 50, 20, 10].map((a) => `--theme-color-${a}: rgba(${rgbStr}, ${a}% );`).join('');
+
+			// 工作区宽高
 			this.cssvar += `--box-width: ${this.options.workspaceSize + this.options.cropperSize * 2}px;`;
 
 			if (this.options.top) {
+				// 窗口顶部距离
 				this.cssvar += `--box-top: ${this.options.top};`;
 			}
 
+			// 遮挡区宽度
 			this.cssvar += `--cropper-size: ${this.options.cropperSize}px;`;
+			// 操作区宽度
 			this.cssvar += `--workspace-size: ${this.options.workspaceSize}px;`;
-
-			this.cssvar += `--theme-color: rgb(${rgbStr});`;
-			this.cssvar += [90, 75, 50, 20, 10].map((a) => `--theme-color-${a}: rgba(${rgbStr}, ${a}% );`).join('');
 		},
 		// 计算初始位置
 		computeInitPosition() {
@@ -258,6 +263,7 @@ export default Vue.extend({
 			window.addEventListener('mousemove', move);
 
 			const mouseup = () => {
+				// 鼠标抬起移除事件
 				window.removeEventListener('mousemove', move);
 				window.removeEventListener('mouseup', mouseup);
 

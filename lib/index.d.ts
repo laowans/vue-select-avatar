@@ -18,7 +18,7 @@ export interface SelectAvatarOptions {
 	cancelButtonText?: string;
 
 	/**
-	 * 主题色(16进制颜色代码)
+	 * 主题色(格式：'#409EFF' / '0, 0, 0')
 	 * @default '#409EFF'
 	 */
 	themeColor?: string;
