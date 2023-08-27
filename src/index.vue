@@ -66,6 +66,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { UnionOptions } from './type';
+import type { SelectAvatarResult } from '../lib';
 
 export default Vue.extend({
 	name: 'select-avatar',
@@ -101,7 +102,7 @@ export default Vue.extend({
 	},
 	props: {
 		resolve: {
-			type: Function,
+			type: Function as PropType<(data: SelectAvatarResult) => void>,
 			required: true,
 		},
 		reject: {
