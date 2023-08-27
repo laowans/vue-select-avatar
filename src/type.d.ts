@@ -15,10 +15,11 @@ export type RequiredOption =
 	| 'dataType'
 	| 'ext'
 	| 'maxZoomRatio'
-	| 'workspaceSize'
+	| 'viewportSize'
 	| 'fileSizeLimit'
 	| 'maxAvatarSize'
 	| 'minAvatarSize'
+	| 'minAvatarSizeLimit'
 	| 'cropperSize'
 	| 'closeOnClickOverlay'
 	| 'closeOnPressEscape';

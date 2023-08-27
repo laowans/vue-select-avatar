@@ -26,7 +26,7 @@
 							p-id="4017"></path>
 					</svg>
 				</div>
-				<!-- 操作区 -->
+				<!-- 视口 -->
 				<div
 					class="__select_avatar__body"
 					:class="{ __edgeLine: options.edgeLine, __grid_background: options.gridBackground }">
@@ -93,6 +93,9 @@ export default Vue.extend({
 
 			// 是否展示
 			show: false,
+
+			// 设置了 minAvatarSize 计算出来的最大缩放比
+			_maxZoomRatio: 0,
 
 			// 定时器存储
 			correctTimer: -1,
@@ -163,7 +166,7 @@ export default Vue.extend({
 			this.cssvar += [90, 75, 50, 20, 10].map((a) => `--theme-color-${a}: rgba(${rgbStr}, ${a}% );`).join('');
 
 			// 工作区宽高
-			this.cssvar += `--box-width: ${this.options.workspaceSize + this.options.cropperSize * 2}px;`;
+			this.cssvar += `--box-width: ${this.options.viewportSize + this.options.cropperSize * 2}px;`;
 
 			if (this.options.top) {
 				// 窗口顶部距离
@@ -172,8 +175,8 @@ export default Vue.extend({
 
 			// 遮挡区宽度
 			this.cssvar += `--cropper-size: ${this.options.cropperSize}px;`;
-			// 操作区宽度
-			this.cssvar += `--workspace-size: ${this.options.workspaceSize}px;`;
+			// 视口宽度
+			this.cssvar += `--workspace-size: ${this.options.viewportSize}px;`;
 		},
 		// 计算初始位置
 		computeInitPosition() {
@@ -205,15 +208,15 @@ export default Vue.extend({
 			}
 
 			// 计算缩放比
-			const proportion = this.options.workspaceSize / minObj.value;
+			const proportion = this.options.viewportSize / minObj.value;
 
 			// 初始宽高赋值
 			// @ts-ignore
-			this[minObj.name] = this.options.workspaceSize;
+			this[minObj.name] = this.options.viewportSize;
 			// @ts-ignore
 			this[maxObj.name] = Math.floor(maxObj.value * proportion); // 根据缩放比计算宽高之间大的值的长度
 
-			const s = this.options.workspaceSize + this.options.cropperSize * 2;
+			const s = this.options.viewportSize + this.options.cropperSize * 2;
 
 			// 计算图片初始 x，y 轴
 			if (minObj.name === 'h') {
@@ -222,6 +225,11 @@ export default Vue.extend({
 			} else {
 				this.x = this.options.cropperSize;
 				this.y = (s - this.h) / 2;
+			}
+
+			if (this.options.minAvatarSize) {
+				// 当 minAvatarSizeLimit 为 true 且设置了 minAvatarSize 时，计算的最大缩放比
+				this._maxZoomRatio = minObj.value / this.options.minAvatarSize - 1;
 			}
 		},
 		// 销毁
@@ -303,6 +311,12 @@ export default Vue.extend({
 				exceeded = true;
 			}
 
+			// 当 minAvatarSizeLimit 为 true 且设置了 minAvatarSize 时，图片放大时宽高的最小值就不能超过 minAvatarSize
+			if (this.options.minAvatarSizeLimit && this.options.minAvatarSize && this.zoomRatio > this._maxZoomRatio) {
+				this.zoomRatio = this._maxZoomRatio;
+				exceeded = true;
+			}
+
 			// 确保图片以鼠标缩放
 			if (!exceeded) {
 				// 获取鼠标位于图片的位置
@@ -348,7 +362,7 @@ export default Vue.extend({
 					t = true;
 				}
 
-				const s = this.options.workspaceSize + this.options.cropperSize;
+				const s = this.options.viewportSize + this.options.cropperSize;
 
 				// 右
 				if (this.width + this.x < s) {
@@ -381,7 +395,7 @@ export default Vue.extend({
 
 			x = Math.abs(Math.abs(this.options.cropperSize - this.x) / zoomRatio); // 获取 x 轴的截取坐标
 			y = Math.abs(Math.abs(this.options.cropperSize - this.y) / zoomRatio); // 获取 y 轴的截取坐标
-			l = Math.abs(Math.floor(this.options.workspaceSize / zoomRatio)); // 获取截取的宽高
+			l = Math.abs(Math.floor(this.options.viewportSize / zoomRatio)); // 获取截取的宽高
 			n = l;
 
 			// 判断是否需要根据 maxAvatarSize 设置实际绘制的宽高

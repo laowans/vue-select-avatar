@@ -76,10 +76,10 @@ export interface SelectAvatarOptions {
 	maxZoomRatio?: number;
 
 	/**
-	 * 操作区大小
+	 * 取景器/视口大小
 	 * @default 300
 	 */
-	workspaceSize?: number;
+	viewportSize?: number;
 
 	/**
 	 * 选择图片文件的大小限制，单位：KB
@@ -98,6 +98,12 @@ export interface SelectAvatarOptions {
 	 * @default 0
 	 */
 	minAvatarSize?: number;
+
+	/**
+	 * 当这个为 true 且设置了 minAvatarSize 时，图片放大时宽高的最小值就不能超过 minAvatarSize
+	 * @default false
+	 */
+	minAvatarSizeLimit: boolean;
 
 	/**
 	 * 遮挡区宽度
