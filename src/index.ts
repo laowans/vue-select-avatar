@@ -4,6 +4,7 @@ import { DefaultOptionsType, UnionOptions } from './type';
 import component from './index.vue';
 import Vue from 'vue';
 import './style.css';
+import { parseColor } from './utils';
 
 // 创建构造组件实例
 const componentConstructor = Vue.extend(component);
@@ -88,15 +89,13 @@ const selectAvatar = (_options?: SelectAvatarOptions) => {
 						const min = Math.min(img.width, img.height);
 
 						if (options.minAvatarSize > 0 && min < options.minAvatarSize) {
+							// 图片宽高过小
 							reject(new ImageDimensionsTooSmall(img.width, img.height, options.minAvatarSize));
 							return;
 						}
 
 						// 获取主题色
-						const R = parseInt(options.themeColor.slice(1, 3), 16);
-						const G = parseInt(options.themeColor.slice(3, 5), 16);
-						const B = parseInt(options.themeColor.slice(5, 7), 16);
-						const RGB = [R, G, B];
+						const RGB = parseColor(options.themeColor, defaultOptions.themeColor);
 
 						// 创建组件实例
 						const instance = new componentConstructor({
