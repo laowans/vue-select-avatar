@@ -4,6 +4,14 @@
   "private": true,
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "description": "基于vue选择头像的包",
+  "keywords": [
+    "选择头像",
+    "select-avatar",
+    "avatar",
+    "vue"
+  ],
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
