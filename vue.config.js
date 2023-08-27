@@ -11,4 +11,5 @@ module.exports = defineConfig({
 			template: './examples/index.html',
 		},
 	},
+	outputDir: './lib/dist', // 输出目录
 });

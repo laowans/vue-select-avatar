@@ -1,11 +1,9 @@
 <template>
-	<div id="app">app</div>
+	<router-view></router-view>
 </template>
 
-<script lang="ts">
+<script>
 export default {
 	name: 'App',
 };
 </script>
-
-<style></style>

@@ -1,16 +1,18 @@
 # 忽略目录
 examples/
-public/
 node_modules/
-static/
 src/
 
 # 忽略指定文件
-vue.config.js
-babel.config.js
-package-lock.json
-.gitignore
-*.map
 lib/dist/*.html
-lib/dist/avatar.common.js
-lib/dist/avatar.umd.js
+lib/dist/lib.common.js
+lib/dist/lib.umd.js
+
+.gitignore
+package-lock.json
+pnpm-lock.yaml
+tsconfig.json
+vue.config.js
+*.map
+
+
