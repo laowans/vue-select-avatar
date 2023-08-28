@@ -12,10 +12,11 @@
 			<button @click="t9">更改区域数值3</button>
 			<button @click="t10">调整缩放比</button>
 			<button @click="t11">调整图片格式jpg</button>
-			<button @click="t12">不用主题色：绿</button>
-			<button @click="t13">不用主题色：黄</button>
-			<button @click="t14">不用主题色：红</button>
+			<button @click="t12">主题色：绿</button>
+			<button @click="t13">主题色：黄</button>
+			<button @click="t14">主题色：红</button>
 			<button @click="t15">限制图片最小宽高128，开启 minAvatarSizeLimit</button>
+			<button @click="t16">不开启边缘线</button>
 		</div>
 		<div class="image-box">
 			<img ref="img" :src="href" v-if="href" />
@@ -155,6 +156,14 @@ export default {
 				minAvatarSize: 128,
 				fileSizeLimit: 6000,
 				minAvatarSizeLimit: true,
+			}).then((res) => {
+				console.log(res);
+				this.href = res.base64;
+			});
+		},
+		t16() {
+			selectAvatar({
+				edgeLine: false,
 			}).then((res) => {
 				console.log(res);
 				this.href = res.base64;
