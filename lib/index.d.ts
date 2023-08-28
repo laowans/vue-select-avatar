@@ -127,6 +127,12 @@ export interface SelectAvatarOptions {
 	 * 关闭前的回调，回调函数内执行 done 参数方法的时候才是真正关闭的时候
 	 */
 	beforeClose?: (done: Function) => void;
+
+	/**
+	 * 是否可以通过方向键和w、a、s、d键调整位置
+	 * @default true
+	 */
+	arrowKeys: boolean;
 }
 
 // 返回结果

@@ -22,7 +22,8 @@ export type RequiredOption =
 	| 'minAvatarSizeLimit'
 	| 'cropperSize'
 	| 'closeOnClickOverlay'
-	| 'closeOnPressEscape';
+	| 'closeOnPressEscape'
+	| 'arrowKeys';
 
 /**
  * 必传的配置项

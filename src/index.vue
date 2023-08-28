@@ -7,13 +7,13 @@
 				:class="{ __dark: options.dark, __top: options.top }"
 				v-show="show">
 				<!-- 头部 -->
-				<div class="__select_avatar__header">
-					<span class="__select_avatar__title">{{ options.title }}</span>
+				<div class="__header">
+					<span class="__title">{{ options.title }}</span>
 					<svg
 						@click="beforeClose"
 						title="关闭窗口"
 						t="1693040404088"
-						class="icon __select_avatar__close"
+						class="__close"
 						viewBox="0 0 1024 1024"
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
@@ -28,27 +28,27 @@
 				</div>
 				<!-- 视口 -->
 				<div
-					class="__select_avatar__body"
+					class="__body"
 					:class="{ __edgeLine: options.edgeLine, __grid_background: options.gridBackground }">
 					<!-- 遮挡层 -->
 					<template v-if="options.cropperSize > 0">
-						<div class="__select_avatar__cropper top"></div>
-						<div class="__select_avatar__cropper right"></div>
-						<div class="__select_avatar__cropper bottom"></div>
-						<div class="__select_avatar__cropper left"></div>
+						<div class="__cropper top"></div>
+						<div class="__cropper right"></div>
+						<div class="__cropper bottom"></div>
+						<div class="__cropper left"></div>
 					</template>
 					<!-- 图片 -->
 					<img
 						:src="base64URL"
 						@mousedown="onMousedown"
 						@wheel="wheelCallback"
-						class="__select_avatar__img"
+						class="__img"
 						:class="{ __drag: drag }"
 						ref="img"
 						:style="`width: ${width}px; height: ${height}px; top: ${y}px; left: ${x}px;`" />
 				</div>
 				<!-- 底部 -->
-				<div class="__select_avatar__footer">
+				<div class="__footer">
 					<button class="__select_avatar__but" @click="close" :title="options.cancelButtonText">
 						{{ options.cancelButtonText }}
 					</button>
@@ -59,7 +59,7 @@
 			</div>
 		</transition>
 		<!-- 遮罩层 -->
-		<div class="__select_avatar__overlay" v-if="options.overlay" @click="overlayClick"></div>
+		<div class="__overlay" v-if="options.overlay" @click="overlayClick"></div>
 	</div>
 </template>
 
@@ -144,7 +144,15 @@ export default Vue.extend({
 	},
 	mounted() {
 		if (this.options.closeOnPressEscape) {
-			window.addEventListener('keyup', this.onPressEscape);
+			window.addEventListener('keyup', this.onPressEscape, {
+				passive: false,
+			});
+		}
+
+		if (this.options.arrowKeys) {
+			window.addEventListener('keydown', this.onArrowKeys, {
+				passive: false,
+			});
 		}
 
 		this.show = true;
@@ -152,6 +160,10 @@ export default Vue.extend({
 	beforeDestroy() {
 		if (this.options.closeOnPressEscape) {
 			window.removeEventListener('keyup', this.onPressEscape);
+		}
+
+		if (this.options.arrowKeys) {
+			window.removeEventListener('keydown', this.onArrowKeys);
 		}
 	},
 	methods: {
@@ -475,6 +487,39 @@ export default Vue.extend({
 				this.beforeClose();
 			}
 		},
+		// 按下方向键和w、a、s、d键事件回调
+		onArrowKeys(event: KeyboardEvent) {
+			if (this.drag || event.shiftKey || event.ctrlKey || event.altKey) return;
+
+			let s = false;
+			switch (event.key) {
+				case 'w':
+				case 'ArrowUp':
+					this.y--;
+					s = true;
+					break;
+				case 'a':
+				case 'ArrowLeft':
+					this.x--;
+					s = true;
+					break;
+				case 's':
+				case 'ArrowDown':
+					this.y++;
+					s = true;
+					break;
+				case 'd':
+				case 'ArrowRight':
+					this.x++;
+					s = true;
+					break;
+			}
+
+			if (s) {
+				event.preventDefault();
+				this.correctPosition();
+			}
+		},
 	},
 	computed: {
 		// 图片宽度
@@ -488,3 +533,5 @@ export default Vue.extend({
 	},
 });
 </script>
+
+<style scoped lang="scss" src="./style.scss"></style>

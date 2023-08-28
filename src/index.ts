@@ -3,7 +3,6 @@ import { ImageTypeError, TmageFileTooLarge, ImageDimensionsTooSmall } from './er
 import { DefaultOptionsType, UnionOptions } from './type';
 import component from './index.vue';
 import Vue from 'vue';
-import './style.css';
 import { parseColor } from './utils';
 
 // 创建构造组件实例
@@ -51,6 +50,7 @@ const defaultOptions: DefaultOptionsType = {
 	cropperSize: 60,
 	closeOnClickOverlay: true,
 	closeOnPressEscape: true,
+	arrowKeys: true,
 };
 
 const selectAvatar = (_options?: SelectAvatarOptions) => {
