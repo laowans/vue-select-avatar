@@ -17,7 +17,6 @@ const accept = [
 	'svgz',
 	'webp',
 	'ico',
-	'x-icon',
 	'xbm',
 	'tif',
 	'jfif',
@@ -66,7 +65,7 @@ const selectAvatar = (_options?: SelectAvatarOptions) => {
 
 			const file = fileList[0];
 
-			const ext = file.type.split('/')[1];
+			const ext = file.name.split('.').pop() || 'unknown';
 
 			// 验证选择的图片的类型
 			if (!accept.includes(ext)) {

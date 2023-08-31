@@ -30,7 +30,7 @@ export interface SelectAvatarOptions {
 	edgeLine?: boolean;
 
 	/**
-	 * 是否需要遮罩层
+	 * 是否展示遮罩层
 	 * @default true
 	 */
 	overlay?: boolean;
@@ -88,7 +88,7 @@ export interface SelectAvatarOptions {
 	fileSizeLimit?: 2048;
 
 	/**
-	 * 返回头像最大值，当选择区域的头像大小(宽高)超过这个时，则按照这个值返回（大于0生效）
+	 * 返回头像最大值，当选择区域的头像大小(宽高)超过这个值时，则按照这个值返回（大于0生效）
 	 * @default 0
 	 */
 	maxAvatarSize?: number;
