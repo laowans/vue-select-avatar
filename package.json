@@ -1,7 +1,6 @@
 {
   "name": "vue-select-avatar",
   "version": "2.0.0",
-  "private": true,
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "description": "基于vue选择头像的包",
@@ -11,6 +10,14 @@
     "avatar",
     "vue"
   ],
+  "homepage": "https://github.com/laowans/vue-select-avatar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laowans/vue-select-avatar"
+  },
+  "bugs": {
+    "url": "https://github.com/laowans/vue-select-avatar/issues"
+  },
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
