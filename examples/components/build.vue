@@ -1,66 +1,56 @@
 <template>
 	<div class="container">
 		<div class="but-box">
-			<button @click="base">基础</button>
-			<button @click="dark">暗色</button>
-			<button @click="largeImage">大图</button>
-			<button @click="sizeLimit">限制大小</button>
-			<button @click="beforeClose">beforeClose</button>
+			<button @click="select">选择头像(build)</button>
 		</div>
+		<VariableOptions v-model="options" :options="variableOptions" dark />
 		<div class="image-box">
-			<img ref="img" :src="href" v-if="href" />
+			<img ref="img" :src="src" v-if="src" />
 		</div>
 	</div>
 </template>
+<script lang="ts">
+import Vue from 'vue';
+import { selectAvatar, SelectAvatarOptions } from '../../lib';
+import variableOptions from '../variableOptions';
+import VariableOptions from 'vue-variable-options';
 
-<script>
-import { selectAvatar } from '../../lib';
-export default {
-	name: 'test',
+export default Vue.extend({
+	name: 'build',
+	components: { VariableOptions },
 	data() {
 		return {
-			href: '',
+			src: '',
+			options: {} as SelectAvatarOptions,
+			variableOptions,
 		};
 	},
 	methods: {
-		// 基础
-		base() {
-			selectAvatar().then((res) => {
-				console.log(res);
-				this.href = res.base64;
-			});
-		},
-		// 暗色
-		dark() {
-			selectAvatar({ dark: true }).then((res) => {
-				console.log(res);
-				this.href = res.base64;
-			});
-		},
-		// 大图
-		largeImage() {
-			selectAvatar({ fileSizeLimit: 4096 }).then((res) => {
-				console.log(res);
-				this.href = res.base64;
-			});
-		},
-		// 限制大小
-		sizeLimit() {
-			selectAvatar({ fileSizeLimit: 4096, maxAvatarSize: 512 }).then((res) => {
-				console.log(res);
-				this.href = res.base64;
-			});
-		},
-		beforeClose() {
-			selectAvatar({
-				beforeClose(done) {
-					setTimeout(done, 1000);
+		select() {
+			selectAvatar(this.options).then(
+				(res) => {
+					console.log('返回结果：', res);
+
+					if (typeof res === 'string') {
+						this.src = res;
+					} else if (res instanceof File) {
+						const reader = new FileReader();
+						reader.onload = () => {
+							this.src = reader.result as string;
+						};
+						reader.readAsDataURL(res);
+					} else {
+						this.src = res.base64;
+					}
 				},
-			}).then((res) => {
-				console.log(res);
-				this.href = res.base64;
-			});
+				(err: Error) => {
+					console.log('错误：');
+					console.error(err);
+
+					setTimeout(() => alert(err.message), 10);
+				}
+			);
 		},
 	},
-};
+});
 </script>

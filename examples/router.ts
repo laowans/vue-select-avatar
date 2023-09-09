@@ -10,10 +10,6 @@ export default new VueRouter({
 			redirect: '/test',
 		},
 		{
-			path: '/demo',
-			component: () => import('./components/demo.vue'),
-		},
-		{
 			path: '/test',
 			component: () => import('./components/test.vue'),
 		},
