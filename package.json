@@ -1,6 +1,6 @@
 {
   "name": "vue-select-avatar",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "description": "基于vue选择头像的包",
@@ -23,7 +23,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lib": "vue-cli-service build --target lib --name lib --dest lib/dist ./src/index.ts",
-    "pub": "npm run lib && npm publish --access"
+    "pub": "npm run lib && npm publish --access",
+    "dev": "npm run lib && npm run serve"
   },
   "peerDependencies": {
     "vue": "^2.5.17 <3.0.0"
@@ -39,7 +40,8 @@
     "typescript": "~4.5.5",
     "vue": "^2.7.14",
     "vue-router": "^3.6.5",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "vue-variable-options": "^2.0.9"
   },
   "browserslist": [
     "> 1%",

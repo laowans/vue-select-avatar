@@ -38,6 +38,9 @@ devDependencies:
   vue-template-compiler:
     specifier: ^2.6.14
     version: 2.7.14
+  vue-variable-options:
+    specifier: ^2.0.9
+    version: 2.0.9(vue@2.7.14)
 
 packages:
 
@@ -1890,6 +1893,10 @@ packages:
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
+    dev: true
+
+  /dayjs@1.11.9:
+    resolution: {integrity: sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==}
     dev: true
 
   /de-indent@1.0.2:
@@ -4845,6 +4852,15 @@ packages:
 
   /vue-template-es2015-compiler@1.9.1:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
+    dev: true
+
+  /vue-variable-options@2.0.9(vue@2.7.14):
+    resolution: {integrity: sha512-pNcvp2Dq2wJlWY2zR89ysYmw5tvYz5OP8BH5QaECGBvemejJfpRbfPOD+27coqtc9PFVj9qg+F8IcMWX5M2kQw==}
+    peerDependencies:
+      vue: ^2.5.17 <3.0.0
+    dependencies:
+      dayjs: 1.11.9
+      vue: 2.7.14
     dev: true
 
   /vue@2.7.14:
