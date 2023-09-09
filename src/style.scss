@@ -131,35 +131,34 @@ $windowTransitiontTime: 300ms;
 					&::before {
 						content: '';
 						display: block;
-						background-color: var(--theme-color-75);
 						position: absolute;
 					}
 					&.top::before {
 						bottom: 0;
 						left: calc(var(--cropper-size) - 1px);
-						height: 1px;
 						width: calc(var(--workspace-size) + 2px);
+						border-bottom: 1px solid var(--theme-color-75);
 					}
 
 					&.right::before {
 						top: 0;
 						left: 0;
 						height: var(--workspace-size);
-						width: 1px;
+						border-left: 1px solid var(--theme-color-75);
 					}
 
 					&.bottom::before {
 						top: 0;
 						left: calc(var(--cropper-size) - 1px);
-						height: 1px;
 						width: calc(var(--workspace-size) + 2px);
+						border-top: 1px solid var(--theme-color-75);
 					}
 
 					&.left::before {
 						top: 0;
 						right: 0;
 						height: var(--workspace-size);
-						width: 1px;
+						border-right: 1px solid var(--theme-color-75);
 					}
 				}
 			}
