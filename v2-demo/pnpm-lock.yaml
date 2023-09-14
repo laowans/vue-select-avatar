@@ -9,11 +9,11 @@ dependencies:
     specifier: ^2.6.14
     version: 2.7.14
   vue-select-avatar:
-    specifier: ^2.0.0
-    version: 2.0.0(vue@2.7.14)
+    specifier: ^2.0.1
+    version: 2.0.1(vue@2.7.14)
   vue-variable-options:
-    specifier: ^2.0.9
-    version: 2.0.9(vue@2.7.14)
+    specifier: ^2.0.11
+    version: 2.0.11(vue@2.7.14)
 
 devDependencies:
   '@types/node':
@@ -4804,8 +4804,8 @@ packages:
       webpack: 5.88.2
     dev: true
 
-  /vue-select-avatar@2.0.0(vue@2.7.14):
-    resolution: {integrity: sha512-W1e59MVH7755wkJtLa+oIPcpwlPSmzcPV3T7fkKMEFx3mSoDWhNJwZKpEcU7ArPfhzz4aIjH6ZLR+zT/AnAvnQ==}
+  /vue-select-avatar@2.0.1(vue@2.7.14):
+    resolution: {integrity: sha512-P7boFJSwLt1k7UF7hRPdX6NtG7GlpXrDaGE5snURwRko2aetSYQv3F0AKViHXRqgd+5QrhxxuJ2wZ6Krb6ZCIA==}
     peerDependencies:
       vue: ^2.5.17 <3.0.0
     dependencies:
@@ -4830,8 +4830,8 @@ packages:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
     dev: true
 
-  /vue-variable-options@2.0.9(vue@2.7.14):
-    resolution: {integrity: sha512-pNcvp2Dq2wJlWY2zR89ysYmw5tvYz5OP8BH5QaECGBvemejJfpRbfPOD+27coqtc9PFVj9qg+F8IcMWX5M2kQw==}
+  /vue-variable-options@2.0.11(vue@2.7.14):
+    resolution: {integrity: sha512-GNwiQwb8RwlFwRt/hnw7GMLIHm4sQi8vlQ5BnsKKV9o/bD96VSM42VtFs3EQBmT37hGNunebHVzxe3C92xNaXA==}
     peerDependencies:
       vue: ^2.5.17 <3.0.0
     dependencies:

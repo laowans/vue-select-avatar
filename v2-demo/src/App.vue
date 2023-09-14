@@ -40,7 +40,7 @@ export default Vue.extend({
 				},
 				themeColor: {
 					label: "主题色(格式：'#409EFF' \/ '0, 0, 0')",
-					type: 'string',
+					type: 'color',
 					default: '#409EFF',
 				},
 				edgeLine: {
